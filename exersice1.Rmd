@@ -9,3 +9,4 @@ output: html_document
 ```{r}
 dt <- read_csv('https://raw.githubusercontent.com/fivethirtyeight/data/master/alcohol-consumption/drinks.csv')
 ```
+s
