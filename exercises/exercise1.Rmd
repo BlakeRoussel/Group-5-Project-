@@ -10,7 +10,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+
+library(tidyverse)
+library(fivethirtyeight)
+
 dt <- read_csv('https://raw.githubusercontent.com/fivethirtyeight/data/master/alcohol-consumption/drinks.csv')
+
+world <- map_data("world")
 ```
 
 Work within your group to create four maps, one for each variable (`beer_servings`, `spirit_servings`, `wine_servings` and `total_litres_of_pure_alcohol`). To streamline the collaboration on Github I recommend following these steps:
