@@ -15,7 +15,7 @@ dt <- read_csv('https://raw.githubusercontent.com/fivethirtyeight/data/master/al
 
 Work within your group to create four maps, one for each variable (`beer_servings`, `spirit_servings`, `wine_servings` and `total_litres_of_pure_alcohol`). To streamline the collaboration on Github I recommend following these steps:
 
-1. **One** member creates a subfolder called `exercises` in the main group repo. The repo should contain a .Rmd called "exercise1".
+1. **One**  member creates a subfolder called `exercises` in the main group repo. The repo should contain a .Rmd called "exercise1".
 
 2. Add the code for `exercise1` for downloading the dataset (that part is going to be the same for everyone). Push the repo.
 
