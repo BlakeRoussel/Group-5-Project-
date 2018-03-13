@@ -1,0 +1,11 @@
+---
+title: "exercise1"
+author: "Blake Roussel"
+date: "March 13, 2018"
+output: html_document
+---
+
+
+```{r}
+dt <- read_csv('https://raw.githubusercontent.com/fivethirtyeight/data/master/alcohol-consumption/drinks.csv')
+```
