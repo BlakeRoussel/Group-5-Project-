@@ -1,0 +1,52 @@
+---
+title: "Interactive"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+editor_options: 
+  chunk_output_type: console
+runtime: shiny
+author: "Blake Roussel"
+date: "April 17, 2018"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(flexdashboard)
+library(plotly)
+```
+
+
+
+```{r}
+con <- dplyr::src_mysql(
+  host = "ba-isdsclass-programdev.lsu.edu",
+  port = 3306,
+  user = 'student',
+  password = 'student',
+  dbname = "isds_3105") 
+
+```
+
+
+```{r}
+commencement <- tbl(con, 'commencement')
+alumnus <- tbl(con, 'alumnus')
+currentPosition <- tbl(con, 'currentPosition')
+location <- tbl(con, 'location')
+internship <- tbl(con,'internship')
+organization <- tbl(con,'organization')
+title <- tbl(con,'title')
+
+
+
+
+```
+
+```{r}
+curpos <- currentPosition %>% collect() %>% drop_na(locationId) 
+#Need to join currentPosition with 
+
+```
+
