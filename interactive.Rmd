@@ -15,6 +15,7 @@ date: "April 17, 2018"
 library(tidyverse)
 library(flexdashboard)
 library(plotly)
+library(tidyr)
 ```
 
 
@@ -54,6 +55,8 @@ curpos <- currentPosition %>% collect() %>% drop_na(locationId)
 ```{r}
 major <-  graduation %>% left_join(graduationTitle, by = c('graduationId', 'graduationId')) %>% left_join(title, by = c('idTitle', 'idTitle')) %>% select(graduationId, majorName)
 
-h <- major %>% left_join(currentPosition, by = c('graduationId', 'graduationId')) %>% select(graduationId, majorName, locationId) %>% left_join(location, by =c('locationId', 'locationId')) %>% count(is.na(state))
+h <- major %>% left_join(currentPosition, by = c('graduationId', 'graduationId')) %>% select(graduationId, majorName, locationId) %>% left_join(location, by =c('locationId', 'locationId')) 
+
+#2,835 have locationId's the rest are null. However, you can make the assumption to the organizationId accordingly. 
 ```
 
