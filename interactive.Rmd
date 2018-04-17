@@ -38,8 +38,9 @@ location <- tbl(con, 'location')
 internship <- tbl(con,'internship')
 organization <- tbl(con,'organization')
 title <- tbl(con,'title')
-
-
+college <- tbl(con, 'college')
+graduation <- tbl(con, 'graduation')
+graduationTitle <- tbl(con, 'graduationTitle')
 
 
 ```
@@ -48,5 +49,11 @@ title <- tbl(con,'title')
 curpos <- currentPosition %>% collect() %>% drop_na(locationId) 
 #Need to join currentPosition with 
 
+```
+
+```{r}
+major <-  graduation %>% left_join(graduationTitle, by = c('graduationId', 'graduationId')) %>% left_join(title, by = c('idTitle', 'idTitle')) %>% select(graduationId, majorName)
+
+h <- major %>% left_join(currentPosition, by = c('graduationId', 'graduationId')) %>% select(graduationId, majorName, locationId) %>% left_join(location, by =c('locationId', 'locationId')) %>% count(is.na(state))
 ```
 
