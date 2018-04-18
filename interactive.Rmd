@@ -47,7 +47,7 @@ graduationTitle <- tbl(con, 'graduationTitle')
 ```
 
 ```{r}
-curpos <- currentPosition %>% collect() %>% drop_na(locationId) 
+#curpos <- currentPosition %>% collect() %>% drop_na(locationId) 
 #Next we need to join tables: e.g. we need location and major in the same table. Also we get that we need to merge it with map data so we can plot. 
 
 ```
@@ -59,4 +59,28 @@ h <- major %>% left_join(currentPosition, by = c('graduationId', 'graduationId')
 
 #2,835 have locationId's the rest are null. However, you can make the assumption to the organizationId accordingly. 
 ```
+
+```{r}
+#This drops all elements with NAs as locationId
+h1 <- h %>% collect() %>% drop_na(locationId)
+
+```
+```{r}
+#This joins mapdata with our table so we can make a map. Its has over 1 million element though so im not sure if its 100% correct.
+states <- map_data("state")
+mutate(h1, statelower = tolower(stateFull)) %>% right_join(states, by = c('statelower' = 'region')) -> mmap
+
+```
+
+```{r}
+# this makes a map but it fills by majorName and we need spacific elements of majorName like: 'Construction Management' or 'Petroleum Engineering' if some knows how to?
+ggplot(data = mmap) + 
+  geom_polygon(aes(x = long, y = lat, group = group, fill = majorName), color = "black") + 
+  coord_fixed(1.3) +
+  guides(fill=F)
+  labs(title = 'Test')
+```
+
+
+
 
