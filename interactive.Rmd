@@ -15,6 +15,7 @@ date: "April 17, 2018"
 library(tidyverse)
 library(flexdashboard)
 library(plotly)
+library(tidyr)
 ```
 
 
@@ -38,8 +39,9 @@ location <- tbl(con, 'location')
 internship <- tbl(con,'internship')
 organization <- tbl(con,'organization')
 title <- tbl(con,'title')
-
-
+college <- tbl(con, 'college')
+graduation <- tbl(con, 'graduation')
+graduationTitle <- tbl(con, 'graduationTitle')
 
 
 ```
@@ -48,5 +50,13 @@ title <- tbl(con,'title')
 curpos <- currentPosition %>% collect() %>% drop_na(locationId) 
 #Next we need to join tables: e.g. we need location and major in the same table. Also we get that we need to merge it with map data so we can plot. 
 
+```
+
+```{r}
+major <-  graduation %>% left_join(graduationTitle, by = c('graduationId', 'graduationId')) %>% left_join(title, by = c('idTitle', 'idTitle')) %>% select(graduationId, majorName)
+
+h <- major %>% left_join(currentPosition, by = c('graduationId', 'graduationId')) %>% select(graduationId, majorName, locationId) %>% left_join(location, by =c('locationId', 'locationId')) 
+
+#2,835 have locationId's the rest are null. However, you can make the assumption to the organizationId accordingly. 
 ```
 
