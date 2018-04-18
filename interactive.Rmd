@@ -46,7 +46,7 @@ title <- tbl(con,'title')
 
 ```{r}
 curpos <- currentPosition %>% collect() %>% drop_na(locationId) 
-#Need to join currentPosition with 
+#Next we need to join tables: e.g. we need location and major in the same table. Also we get that we need to merge it with map data so we can plot. 
 
 ```
 
