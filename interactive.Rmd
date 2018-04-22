@@ -1,16 +1,14 @@
 ---
-title: "Interactive"
+title: "Final Presentation"
 output: 
   flexdashboard::flex_dashboard:
-    orientation: columns
-    vertical_layout: fill
+    vertical_layout: scroll
 editor_options: 
   chunk_output_type: console
 runtime: shiny
-author: "Blake Roussel"
-date: "April 17, 2018"
+author: "Group 5"
+date: "April 23, 2018"
 ---
-
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(flexdashboard)
@@ -26,7 +24,6 @@ con <- dplyr::src_mysql(
   user = 'student',
   password = 'student',
   dbname = "isds_3105") 
-
 ```
 
 ```{r}
@@ -40,8 +37,6 @@ title <- tbl(con,'title')
 college <- tbl(con, 'college')
 graduation <- tbl(con, 'graduation')
 graduationTitle <- tbl(con, 'graduationTitle')
-
-
 ```
 
 ```{r}
@@ -55,7 +50,6 @@ h <- major %>% left_join(currentPosition, by = c('graduationId', 'graduationId')
 ```{r}
 #This drops all elements with NAs as locationId
 h1 <- h %>% collect() %>% drop_na(locationId)
-
 ```
 
 ```{r}
@@ -64,8 +58,6 @@ h1 <- h %>% collect() %>% drop_na(locationId)
 states <- map_data("state")
 h2 <- mutate(h1, region = tolower(stateFull)) 
 #right_join(h2,states, by = c('region' = 'region')) -> mmap
-
-
 ```
 
 ```{r}
@@ -78,8 +70,6 @@ left_join(countstate,states, by = c('region' = 'region')) -> test1
 h2la <- h2 %>% subset(., region %in% c("louisiana"))
 h2la %>% group_by(majorName, city) %>% summarise(total = n()) -> lacountstate
 h2la %>% group_by(majorName) %>% summarise(total = n()) -> countstatela
-
-
 ```
 
 ```{r}
@@ -94,7 +84,6 @@ mappingFunc <- function(df, name) {
     guides(fill=F) +
     ggtitle( name )
 }
-
 ```
 
 ```{r}
@@ -106,6 +95,16 @@ mplottingFunc <- function(df, name) {
 }
 ```
 
+```{r}
+mplottingFunc1 <- function(df, name) {
+  if (!( name  %in% unique(df$majorName))) stop('You need to pick a Major within those avaialble in the dataset')
+  ggplot(filter( df , majorName == name )) +
+    geom_col(aes(region, total))
+}
+```
+
+
+
  
 Inputs {.sidebar}
 -------------------------------------
@@ -115,13 +114,35 @@ MajorNames <- setNames(unique(h2$majorName), unique(h2$majorName)) %>% as.list()
  selectInput("Major", label = h4("Major"), 
     choices = MajorNames, 
     selected = 'Construction Management')
-
-
 ```
 
-Column {data-width=650}
------------------------------------------------------------------------
+Column {data-width=600}
+-------------------------------------
+###Research Question
+What state is a graduate most likey to live in based on the major they graduated in? e.g. What majors are higest demand in each state?
 
+###Users
+- Departments at LSU
+  --- Interested in the placement of their students
+- LA Office of Student Financial Assistance
+  --- Determine if TOPS funding certain majors is econmically worthwile based on graduate retention in        Louisiana
+- Prospective students
+  --- Evaluating LSU majors based on where they can get job
+- LSU Seniors
+  --- Applying for jobs
+
+###Limitations
+1. Flexdashboard - more knowledge on formatting would have allowed for better presentation of material.
+2. Geospacial visualization
+
+###A map to visualize the locations people reside in after graduating with the selected major
+```{r}
+renderPlot({
+  mappingFunc(test1, input$Major)
+})
+```
+
+###The top five cities in Louisiana people reside in with the selected degree
 ```{r}
 renderPlot({
  lacountstate %>% 
@@ -130,21 +151,25 @@ renderPlot({
 })
 ```
 
-Column {data-width=650}
------------------------------------------------------------------------
+###The top five states people reside in after graduating with the selected major
 ```{r}
 renderPlot({
-  mappingFunc(test1, input$Major)
+  countstate %>%
+    arrange(desc(total)) %>%
+    slice(1:5) %>% mplottingFunc1(., input$Major)
 })
 ```
 
+###The top five majors that stay in Louisiana after graduation
 ```{r}
 #top 5 highest demand majors in la
-countstatela %>% 
-    arrange(desc(total)) %>%
-    slice(1:5) %>%
-ggplot() +
-    geom_col(aes(majorName, total))
+renderPlot({
+  countstatela %>% 
+      arrange(desc(total)) %>%
+      slice(1:5) %>%
+  ggplot() +
+      geom_col(aes(majorName, total))
+})
 ```
 
 
