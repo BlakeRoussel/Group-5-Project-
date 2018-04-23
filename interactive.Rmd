@@ -74,7 +74,7 @@ h2la %>% group_by(majorName) %>% summarise(total = n()) -> countstatela
 
 ```{r}
 mappingFunc <- function(df, name) {
-  if (!( name  %in% unique(df$majorName))) stop('You need to pick a Major within those avaialble in the dataset')
+  if (!( name  %in% unique(df$majorName))) stop('You need to pick a Major within those available in the dataset')
   ggplot(filter( df , majorName == name )) +
     geom_polygon(data = states, aes(x=long, y=lat, group = group), color = "black") +
     coord_fixed(1.3) +
@@ -89,7 +89,7 @@ mappingFunc <- function(df, name) {
 ```{r}
 
 mplottingFunc <- function(df, name) {
-  if (!( name  %in% unique(df$majorName))) stop('You need to pick a Major within those avaialble in the dataset')
+  if (!( name  %in% unique(df$majorName))) stop('You need to pick a Major within those available in the dataset')
   ggplot(filter( df , majorName == name )) +
     geom_col(aes(city, total))
 }
@@ -97,7 +97,7 @@ mplottingFunc <- function(df, name) {
 
 ```{r}
 mplottingFunc1 <- function(df, name) {
-  if (!( name  %in% unique(df$majorName))) stop('You need to pick a Major within those avaialble in the dataset')
+  if (!( name  %in% unique(df$majorName))) stop('You need to pick a Major within those available in the dataset')
   ggplot(filter( df , majorName == name )) +
     geom_col(aes(region, total))
 }
@@ -119,7 +119,7 @@ MajorNames <- setNames(unique(h2$majorName), unique(h2$majorName)) %>% as.list()
 Column {data-width=600}
 -------------------------------------
 ###Research Question
-What state is a graduate most likey to live in based on the major they graduated with? e.g. What majors are higest demand in each state?
+What state is a graduate most likely to live in based on the major they graduated with? e.g. What majors are higest demand in each state?
 
 ###Users
 - Departments at LSU
@@ -140,7 +140,7 @@ What state is a graduate most likey to live in based on the major they graduated
 Most majors stayed in Louisiana.
 Besides Louisiana, Texas receives the most LSU graduates.
 Engineering majors tend to leave the state.
-Of the graduates that stayed in Louisiana, most reside in Baton Rouge with New Orleans hosuing the second most.
+Of the graduates that stayed in Louisiana, most reside in Baton Rouge with New Orleans housing the second most.
 
 ###A map to visualize the locations people reside in after graduating with the selected major
 ```{r}
